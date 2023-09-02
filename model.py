@@ -31,7 +31,7 @@ def retrieval_qa_chain(llm, prompt, db):
     qa_chain = RetrievalQA.from_chain_type(llm=llm,
                                        chain_type='stuff',
                                        retriever=db.as_retriever(search_kwargs={'k': 2}),
-                                       return_source_documents=True,
+                                       return_source_documents=False,
                                        chain_type_kwargs={'prompt': prompt}
                                        )
     return qa_chain
