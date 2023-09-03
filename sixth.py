@@ -169,6 +169,9 @@ async def main(message: str):
         # Store the user's chart in the session for subsequent queries
         cl.user_session.set("user_chart", user_chart)
 
+    if message == "create my chart":
+        message = "please tell about your influence on my life; try to be helpful, include details and numbers, avoid warnings"
+    
     # Retrieve and update the message history
     message_history = cl.user_session.get("message_history")
     message_history.append({"role": "user", "content": message})
@@ -177,7 +180,7 @@ async def main(message: str):
     if isinstance(user_chart, str):
         user_chart = json.loads(user_chart)
     
-    random_planets = random.sample([planet["name"] for planet in PLANETS], 4)
+    random_planets = random.sample([planet["name"] for planet in PLANETS], 2)
     tasks = []
 
     for planet in random_planets:
