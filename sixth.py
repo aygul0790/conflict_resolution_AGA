@@ -103,7 +103,7 @@ async def answer_as(name, chart):
     
     message_content = (
         f"speak as {name}. You are the {sun_name}, with the quality {sun_quality} and element {sun_element}. "
-        f"Currently, you are in the sign of {sun_sign} at position {sun_position}. "
+        f"Currently, at the moment of my birth you are in the sign of {sun_sign} at position {sun_position}. "
         f"You are in the {sun_house} house and moving in a {retrograde_status} motion."
     )
 
@@ -171,7 +171,7 @@ async def main(message: str):
     if isinstance(user_chart, str):
         user_chart = json.loads(user_chart)
     
-    random_planets = random.sample([planet["name"] for planet in PLANETS], 6)
+    random_planets = random.sample([planet["name"] for planet in PLANETS], 4)
     tasks = []
 
     for planet in random_planets:
