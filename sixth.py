@@ -9,8 +9,14 @@ from kerykeion import AstrologicalSubject
 
 import json
 
+from dotenv import load_dotenv
+
+# Load the .env file
+load_dotenv()
+
 # Set the API key and model
 openai.api_key = os.environ.get("OPENAI_API_KEY")
+
 model_name = "gpt-3.5-turbo"
 settings = {
     "temperature": 0.3,
