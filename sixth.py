@@ -36,25 +36,29 @@ def validate_time(time_string):
         datetime.strptime(time_string, TIME_FORMAT)
         return True
     except ValueError:
-        return False
+        try:
+            datetime.strptime(time_string, "%H:%M")
+            return True
+        except ValueError:
+            return False
 
 def validate_place(place_string):
     return bool(place_string and place_string.strip())
 
 PLANETS = [
-    {"name": "Sun", "image": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Sun_poster.svg"},
-    {"name": "Moon", "image": "https://upload.wikimedia.org/wikipedia/commons/6/68/FullMoon2010.jpg"},
-    {"name": "Mercury", "image": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Mercury_in_color_-_Prockter07_centered.jpg"},
-    {"name": "Venus", "image": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Venus-real_color.jpg"},
-    {"name": "Mars", "image": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Mars_Valles_Marineris.jpeg"},
-    {"name": "Jupiter", "image": "https://upload.wikimedia.org/wikipedia/commons/5/5a/Jupiter_and_its_shrunken_Great_Red_Spot.jpg"},
-    {"name": "Saturn", "image": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Saturn_during_Equinox.jpg"},
-    {"name": "Uranus", "image": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Uranus2.jpg"},
-    {"name": "Neptune", "image": "https://upload.wikimedia.org/wikipedia/commons/5/56/Neptune_Full.jpg"},
-    {"name": "Pluto", "image": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Pluto_by_LORRI_and_Ralph%2C_13_July_2015.jpg"}
+    {"name": "Sun", "image": "https://toppng.com/uploads/preview/sun-icon-free-download-png-and-vector-sun-icon-11562902365ry8jqdxl5e.png"},
+    {"name": "Moon", "image": "https://cdn.icon-icons.com/icons2/2645/PNG/512/moon_icon_159962.png"},
+    {"name": "Mercury", "image": "https://cdn-icons-png.flaticon.com/512/2909/2909511.png"},
+    {"name": "Venus", "image": "https://cdn-icons-png.flaticon.com/512/1266/1266512.png"},
+    {"name": "Mars", "image": "https://cdn-icons-png.flaticon.com/512/182/182535.png"},
+    {"name": "Jupiter", "image": "https://cdn-icons-png.flaticon.com/512/124/124609.png"},
+    {"name": "Saturn", "image": "https://cdn-icons-png.flaticon.com/512/1789/1789725.png"},
+    {"name": "Uranus", "image": "https://cdn-icons-png.flaticon.com/512/290/290803.png"},
+    {"name": "Neptune", "image": "https://cdn-icons-png.flaticon.com/512/3672/3672231.png"},
+    {"name": "Pluto", "image": "https://cdn-icons-png.flaticon.com/512/1266/1266513.png"}
 ]
 
-TESTING = True
+TESTING = False
 
 async def validate_input(prompt, validation_func):
     """Utility function for validating user input"""
@@ -98,9 +102,9 @@ async def answer_as(name, chart):
     retrograde_status = "retrograde" if chart["retrograde"] else "direct"
     
     message_content = (
-        f"speak as {name}. I am the {sun_name}, with the quality {sun_quality} and element {sun_element}. "
-        f"Currently, I am in the sign of {sun_sign} at position {sun_position}. "
-        f"I am in the {sun_house} house and moving in a {retrograde_status} motion."
+        f"speak as {name}. You are the {sun_name}, with the quality {sun_quality} and element {sun_element}. "
+        f"Currently, you are in the sign of {sun_sign} at position {sun_position}. "
+        f"You are in the {sun_house} house and moving in a {retrograde_status} motion."
     )
 
     # Make an API call to OpenAI's model for completion.
@@ -130,8 +134,8 @@ async def main(message: str):
         else:
             # Prompt the user for birth data
             birth_date = await validate_input("What's your birth date? (e.g. DD/MM/YYYY)", validate_date)
-            birth_time = await validate_input("What's your birth time? (e.g. HH:MM AM/PM)", validate_time)
-            birth_place = await validate_input("Where were you born? (City, Country)", validate_place)
+            birth_time = await validate_input("What's your birth time? (e.g. HH:MM)", validate_time)
+            birth_place = await validate_input("Where were you born? (e.g. SanFrancisco)", validate_place)
             
             birth_data = {
                 "date": birth_date,
@@ -167,7 +171,7 @@ async def main(message: str):
     if isinstance(user_chart, str):
         user_chart = json.loads(user_chart)
     
-    random_planets = random.sample([planet["name"] for planet in PLANETS], 2)
+    random_planets = random.sample([planet["name"] for planet in PLANETS], 6)
     tasks = []
 
     for planet in random_planets:
